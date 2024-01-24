@@ -1,15 +1,15 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import useFileUpload from '../hooks/useFileUpload';
 import useImageCrop from '../hooks/useImageCrop';
 import axios from 'axios';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
+import useFileDownload from '../hooks/useFileDownload';
 
 const MIN_WIDTH = 150;
 const ASPECT = 3 / 4;
 
 const ImageForm = () => {
-  const { handleChange: handleChangeFile, previewURL } = useFileUpload();
   const {
     crop,
     setCrop,
@@ -18,21 +18,25 @@ const ImageForm = () => {
     imgRef,
     canvasRef,
     handleLoadImage,
-    generateCroppedImage,
+    getCurrentOffscreen,
   } = useImageCrop({ aspect: ASPECT });
-  const hiddenAnchorRef = useRef<HTMLAnchorElement>(null);
+
+  const { handleChange: handleChangeFile, previewURL } = useFileUpload();
+  const { handleDownload, hiddenAnchorRef } = useFileDownload({
+    getCurrentOffscreen,
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const croppedFile = await generateCroppedImage();
-    console.log(croppedFile);
+    const blob = await getCurrentOffscreen().convertToBlob({
+      type: 'image/png',
+    });
+
+    const croppedFile = new File([blob], 'cropped.png');
 
     const formData = new FormData();
-
-    if (croppedFile) {
-      formData.append('file', croppedFile);
-    }
+    croppedFile && formData.append('file', croppedFile);
     formData.append('message', '자른 이미지를 서버로 보낼게요');
 
     const res = await axios.post('http://localhost:5010/upload', formData);
@@ -72,7 +76,11 @@ const ImageForm = () => {
             <button className="bg-gray-200 p-4" type="submit">
               서버로 보내기
             </button>
-            <button className="bg-gray-200 p-4" type="submit">
+            <button
+              className="bg-gray-200 p-4"
+              type="button"
+              onClick={handleDownload}
+            >
               다운로드 하기
             </button>
           </section>

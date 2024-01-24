@@ -18,8 +18,8 @@ const useImageCrop = ({ aspect = 3 / 4 }: useImageCropProps) => {
   const imgRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  /** 현재 선택된 영역을 잘라서 blob 이미지로 반환 */
-  const generateCroppedImage = async () => {
+  /** 현재 선택된 영역을 잘라서 offscreen 객체 반환 */
+  const getCurrentOffscreen = () => {
     const image = imgRef.current;
     const previewCanvas = canvasRef.current;
 
@@ -52,11 +52,7 @@ const useImageCrop = ({ aspect = 3 / 4 }: useImageCropProps) => {
       offscreen.height
     );
 
-    const blob = await offscreen.convertToBlob({
-      type: 'image/png',
-    });
-
-    return new File([blob], 'test.png');
+    return offscreen;
   };
 
   /** 이미지 로드시 기본 crop 설정 */
@@ -103,7 +99,7 @@ const useImageCrop = ({ aspect = 3 / 4 }: useImageCropProps) => {
     imgRef,
     canvasRef,
     handleLoadImage,
-    generateCroppedImage,
+    getCurrentOffscreen,
   };
 };
 
