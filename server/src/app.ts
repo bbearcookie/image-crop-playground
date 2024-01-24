@@ -17,11 +17,23 @@ app.use(
   })
 );
 
+const uploader = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+      const ext = file.originalname.split('.').pop();
+      cb(null, `${Date.now()}.${ext}`);
+    },
+  }),
+});
+
 app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
-app.post('/upload', multer().single('file'), (req, res) => {
+app.post('/upload', uploader.single('file'), (req, res) => {
   console.log(req.file);
   console.log(req.body);
   res.send('File uploaded');
