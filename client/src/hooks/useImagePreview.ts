@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useFileUpload = () => {
+const useImagePreview = () => {
   const [file, setFile] = useState<File>();
   const [previewURL, setPreviewURL] = useState<string>('');
 
@@ -20,4 +20,4 @@ const useFileUpload = () => {
   return { file, previewURL, handleChange };
 };
 
-export default useFileUpload;
+export default useImagePreview;

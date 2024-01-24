@@ -1,10 +1,10 @@
 import React from 'react';
-import useFileUpload from '../hooks/useFileUpload';
+import useImagePreview from '../hooks/useImagePreview';
 import useImageCrop from '../hooks/useImageCrop';
 import axios from 'axios';
 import ReactCrop from 'react-image-crop';
 import 'react-image-crop/dist/ReactCrop.css';
-import useFileDownload from '../hooks/useFileDownload';
+import useImageDownload from '../hooks/useImageDownload';
 
 const MIN_WIDTH = 150;
 const ASPECT = 3 / 4;
@@ -21,8 +21,8 @@ const ImageForm = () => {
     getCurrentOffscreen,
   } = useImageCrop({ aspect: ASPECT });
 
-  const { handleChange: handleChangeFile, previewURL } = useFileUpload();
-  const { handleDownload, hiddenAnchorRef } = useFileDownload({
+  const { handleChange: handleChangeFile, previewURL } = useImagePreview();
+  const { handleDownload, hiddenAnchorRef } = useImageDownload({
     getCurrentOffscreen,
   });
 

@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 
-interface useFileDownloadProps {
+interface useImageDownloadProps {
   getCurrentOffscreen: () => OffscreenCanvas;
 }
 
-const useFileDownload = ({ getCurrentOffscreen }: useFileDownloadProps) => {
+const useImageDownload = ({ getCurrentOffscreen }: useImageDownloadProps) => {
   const hiddenAnchorRef = useRef<HTMLAnchorElement>(null);
   const blobUrlRef = useRef('');
 
@@ -29,4 +29,4 @@ const useFileDownload = ({ getCurrentOffscreen }: useFileDownloadProps) => {
   return { handleDownload, hiddenAnchorRef };
 };
 
-export default useFileDownload;
+export default useImageDownload;
