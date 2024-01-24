@@ -8,13 +8,13 @@ const useImageDownload = ({ getCurrentOffscreen }: useImageDownloadProps) => {
   const hiddenAnchorRef = useRef<HTMLAnchorElement>(null);
   const blobUrlRef = useRef('');
 
-  const handleDownload = async () => {
+  const handleDownload = async (mimeType?: string) => {
     if (!hiddenAnchorRef.current) {
       return;
     }
 
     const blob = await getCurrentOffscreen().convertToBlob({
-      type: 'image/png',
+      type: mimeType,
     });
 
     if (blobUrlRef.current) {

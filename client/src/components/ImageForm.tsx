@@ -21,19 +21,27 @@ const ImageForm = () => {
     getCurrentOffscreen,
   } = useImageCrop({ aspect: ASPECT });
 
-  const { handleChange: handleChangeFile, previewURL } = useImagePreview();
-  const { handleDownload, hiddenAnchorRef } = useImageDownload({
+  const {
+    file,
+    previewURL,
+    handleChange: handleChangeFile,
+  } = useImagePreview();
+  const { hiddenAnchorRef, handleDownload } = useImageDownload({
     getCurrentOffscreen,
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (!file) {
+      return;
+    }
+
     const blob = await getCurrentOffscreen().convertToBlob({
-      type: 'image/png',
+      type: file.type,
     });
 
-    const croppedFile = new File([blob], 'cropped.png');
+    const croppedFile = new File([blob], file.name);
 
     const formData = new FormData();
     croppedFile && formData.append('file', croppedFile);
@@ -79,7 +87,7 @@ const ImageForm = () => {
             <button
               className="bg-gray-200 p-4"
               type="button"
-              onClick={handleDownload}
+              onClick={() => handleDownload(file?.type)}
             >
               다운로드 하기
             </button>
