@@ -1,5 +1,11 @@
+import ImageForm from './components/ImageForm';
+
 function App() {
-  return <div className="bg-red-300">하이</div>;
+  return (
+    <>
+      <ImageForm />
+    </>
+  );
 }
 
 export default App;
