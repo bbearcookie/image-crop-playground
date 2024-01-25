@@ -9,9 +9,7 @@ const useImageDownload = ({ getCurrentOffscreen }: useImageDownloadProps) => {
   const blobUrlRef = useRef('');
 
   const handleDownload = async (mimeType?: string) => {
-    if (!hiddenAnchorRef.current) {
-      return;
-    }
+    if (!hiddenAnchorRef.current) return;
 
     const blob = await getCurrentOffscreen().convertToBlob({
       type: mimeType,

@@ -3,8 +3,8 @@ import useImagePreview from '../hooks/useImagePreview';
 import useImageCrop from '../hooks/useImageCrop';
 import axios from 'axios';
 import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
 import useImageDownload from '../hooks/useImageDownload';
+import 'react-image-crop/dist/ReactCrop.css';
 
 const MIN_WIDTH = 150;
 const ASPECT = 3 / 4;
@@ -33,9 +33,7 @@ const ImageForm = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!file) {
-      return;
-    }
+    if (!file) return;
 
     const blob = await getCurrentOffscreen().convertToBlob({
       type: file.type,

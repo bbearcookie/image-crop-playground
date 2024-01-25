@@ -6,6 +6,7 @@ const useImagePreview = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
+
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -13,8 +14,11 @@ const useImagePreview = () => {
     };
 
     const file = e.target.files[0];
-    setFile(file);
-    reader.readAsDataURL(file);
+
+    if (file) {
+      setFile(file);
+      reader.readAsDataURL(file);
+    }
   };
 
   return { file, previewURL, handleChange };
